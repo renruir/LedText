@@ -35,7 +35,7 @@ public class SerialPortFinder {
                 File[] files = dev.listFiles();
                 Log.d(TAG, "files: "+files);
                 if(files == null){
-                    files = new File[1];
+                    files = new  File[1];
                     files[0] = new File("/dev/sst");
                 }
                 for (int i = 0; i < files.length; i++) {
