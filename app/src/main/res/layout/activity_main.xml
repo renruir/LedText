@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:customAttr="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="360px"
@@ -12,31 +13,36 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.sunfusheng.marqueeview.MarqueeView
+        <com.led.ledetext.ScrollTextView
             android:id="@+id/line1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:inputType="text"
-            android:textColor="@android:color/white"
-            app:mvAnimDuration="1000"
-            app:mvDirection="right_to_left"
-            app:mvGravity='center'
-            app:mvInterval="2000"
-            app:mvSingleLine="true"
-            app:mvTextSize="@dimen/text_size" />
+            android:layout_height="180px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="6dp"
+            android:layout_toRightOf="@+id/imageView2"
+            android:singleLine="true"
+            customAttr:isHorizontal="true"
+            customAttr:isScrollForever="true"
+            customAttr:speed="1"
+            customAttr:text="Welcome to ShenZhen!,"
+            customAttr:text_color="#ff000000"
+            customAttr:text_size="@dimen/text_size"
+            customAttr:times="567" />
 
-        <TextView
+        <com.led.ledetext.ScrollTextView
             android:id="@+id/line2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="@dimen/text_size"
-            android:letterSpacing="0.6"
-            android:text="一二三四五六七八九十" />
+            android:layout_height="180px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="6dp"
+            android:layout_toRightOf="@+id/imageView2"
+            android:singleLine="true"
+            customAttr:isHorizontal="false"
+            customAttr:speed="1"
+            customAttr:text="Welcome to ShenZhen!"
+            customAttr:text_color="#ff000000"
+            customAttr:text_size="@dimen/text_size"
+            customAttr:times="567" />
 
     </LinearLayout>
 

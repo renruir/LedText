@@ -17,24 +17,30 @@ public class MainActivity extends AppCompatActivity {
     private Application mApplication;
     private String[] devDevices;
     private SerialPortFinder mSerialPortFinder;
-    private MarqueeView line1;
+    private ScrollTextView line1;
+    private ScrollTextView line2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initApplication();
 
-//        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setContentView(R.layout.activity_main);
-        line1 = (MarqueeView)findViewById(R.id.line1);
+        line1 = (ScrollTextView)findViewById(R.id.line1);
+        line2 = (ScrollTextView) findViewById(R.id.line2);
 
+        line1.setText("欢迎来深圳！");
+        line2.setText("Welcome to ShenZhen!");
+        line1.setSpeed(4);
+        line2.setSpeed(4);
+    }
+
+    private void initApplication(){
         mApplication = (Application) getApplication();
         mSerialPortFinder = mApplication.mSerialPortFinder;
-
         devDevices = mSerialPortFinder.getAllDevices();
         for(String device:devDevices){
             Log.d(TAG, "device: " + device);
         }
-
-        line1.startWithText("在内容供给层面，为新玩家带来发展机会");
     }
 }
