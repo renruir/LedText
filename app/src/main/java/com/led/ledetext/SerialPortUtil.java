@@ -18,6 +18,8 @@ import android_serialport_api.SerialPort;
 
 public class SerialPortUtil {
 
+    private final static String TAG = SerialPortUtil.class.getName();
+
     private SerialPort serialPort = null;
     private InputStream inputStream = null;
     private OutputStream outputStream = null;
@@ -104,6 +106,7 @@ public class SerialPortUtil {
             super.run();
             //条件判断，只要条件为true，则一直执行这个线程
             while (isStart) {
+                Log.i(TAG, "r111111111111");
                 if (inputStream == null) {
                     return;
                 }
@@ -112,6 +115,7 @@ public class SerialPortUtil {
                     int size = inputStream.read(readData);
                     if (size > 0) {
                         String readString = DataUtils.byteArrToHex(readData, 0, size);
+                        Log.d(TAG, "run: " + readString);
                         EventBus.getDefault().post(readString);
                     }
                 } catch (IOException e) {

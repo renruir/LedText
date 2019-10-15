@@ -4,13 +4,13 @@
     xmlns:customAttr="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="360px"
+    android:layout_height="500px"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="360px"
         android:orientation="vertical">
 
         <com.led.ledetext.ScrollTextView
@@ -19,7 +19,6 @@
             android:layout_height="180px"
             android:layout_alignParentRight="true"
             android:layout_marginRight="6dp"
-            android:layout_toRightOf="@+id/imageView2"
             android:singleLine="true"
             customAttr:isHorizontal="true"
             customAttr:isScrollForever="true"
@@ -35,7 +34,6 @@
             android:layout_height="180px"
             android:layout_alignParentRight="true"
             android:layout_marginRight="6dp"
-            android:layout_toRightOf="@+id/imageView2"
             android:singleLine="true"
             customAttr:isHorizontal="false"
             customAttr:speed="1"
@@ -43,7 +41,12 @@
             customAttr:text_color="#ff000000"
             customAttr:text_size="@dimen/text_size"
             customAttr:times="567" />
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/test_serial"
+        android:layout_width="match_parent"
+        android:layout_height="140px"
+        android:text="send data" />
 
 </LinearLayout>

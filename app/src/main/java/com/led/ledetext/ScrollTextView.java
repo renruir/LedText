@@ -132,7 +132,6 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
             setMeasuredDimension(viewWidth, mHeight);
             viewHeight = mHeight;
         }
-
     }
 
 
@@ -273,7 +272,6 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
     }
 
 
-
     /**
      * scroll text vertical
      */
@@ -317,9 +315,10 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
                     continue;
                 }
 
+                float startPoint = (viewWidth - textWidth) / 2;
                 Canvas canvas = surfaceHolder.lockCanvas();
                 canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
-                canvas.drawText(strings.get(n), 0, i, paint);
+                canvas.drawText(strings.get(n), startPoint, i, paint);
                 surfaceHolder.unlockCanvasAndPost(canvas);
 
                 if (i - baseLine < 4 && i - baseLine > 0) {
