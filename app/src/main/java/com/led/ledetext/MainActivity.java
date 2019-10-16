@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import android_serialport_api.SerialPortFinder;
 
-public class MainActivity extends AppCompatActivity implements RecSerialInfoCallback, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getName();
 
@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements RecSerialInfoCall
         serialPortUtil.openSerialPort(device, baudRate);
     }
 
-    @Override
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void recSerialData(String data) {
         formatRecData(data);
