@@ -13,7 +13,7 @@
         android:layout_height="360px"
         android:orientation="vertical">
 
-        <com.led.ledetext.ScrollTextView
+        <com.led.ledetext.view.ScrollTextView
             android:id="@+id/line1"
             android:layout_width="match_parent"
             android:layout_height="180px"
@@ -28,7 +28,7 @@
             customAttr:text_size="@dimen/text_size"
             customAttr:times="567" />
 
-        <com.led.ledetext.ScrollTextView
+        <com.led.ledetext.view.ScrollTextView
             android:id="@+id/line2"
             android:background="@color/colorPrimary"
             android:layout_width="match_parent"

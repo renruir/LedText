@@ -19,6 +19,12 @@ package com.led.ledetext;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.led.ledetext.bean.DaoMaster;
+import com.led.ledetext.bean.DaoSession;
+import com.led.ledetext.bean.TextBeanDao;
+
+import org.greenrobot.greendao.database.Database;
+
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -30,6 +36,20 @@ public class Application extends android.app.Application {
 
 	public SerialPortFinder mSerialPortFinder = new SerialPortFinder();
 	private SerialPort mSerialPort = null;
+	private DaoSession daoSession;
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		// regular SQLite database
+		DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "text-db");
+		Database db = helper.getWritableDb();
+		daoSession = new DaoMaster(db).newSession();
+	}
+
+	public DaoSession getDaoSession() {
+		return daoSession;
+	}
 
 	public SerialPort getSerialPort() throws SecurityException, IOException, InvalidParameterException {
 

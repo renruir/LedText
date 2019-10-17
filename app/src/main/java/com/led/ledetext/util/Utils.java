@@ -1,7 +1,11 @@
-package com.led.ledetext;
+package com.led.ledetext.util;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.graphics.Color;
+import android.provider.Settings;
 import android.util.Log;
+import android.view.WindowManager;
 
 public class Utils {
     private final static String TAG = Utils.class.getName();
@@ -59,5 +63,57 @@ public class Utils {
         return s;
     }
 
+    public static boolean isAutoBrightness(ContentResolver aContentResolver) {
+        boolean automicBrightness = false;
+        try {
+            automicBrightness = Settings.System.getInt(aContentResolver,
+                    Settings.System.SCREEN_BRIGHTNESS_MODE) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        return automicBrightness;
+    }
+
+
+    /**
+     * 获取屏幕的亮度
+     *
+     * @param activity
+     * @return
+     */
+    public static int getScreenBrightness(Activity activity) {
+        int nowBrightnessValue = 0;
+        ContentResolver resolver = activity.getContentResolver();
+        try {
+            nowBrightnessValue = android.provider.Settings.System.getInt(
+                    resolver, Settings.System.SCREEN_BRIGHTNESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return nowBrightnessValue;
+    }
+
+    /**
+     * 设置亮度
+     * @param activity
+     * @param brightness
+     */
+    public static void setBrightness(Activity activity, int brightness) {
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        lp.screenBrightness = Float.valueOf(brightness) * (1f / 255f);
+        Log.d(TAG, "set  lp.screenBrightness == " + lp.screenBrightness);
+        activity.getWindow().setAttributes(lp);
+    }
+
+    /**
+     * 停止自动亮度调节
+     *
+     * @param activity
+     */
+    public static void stopAutoBrightness(Activity activity) {
+        Settings.System.putInt(activity.getContentResolver(),
+                Settings.System.SCREEN_BRIGHTNESS_MODE,
+                Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+    }
 
 }

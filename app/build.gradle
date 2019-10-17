@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 android {
     compileSdkVersion 29
@@ -36,4 +37,6 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.sunfusheng:MarqueeView:1.4.1'
     implementation 'androidx.databinding:databinding-runtime:3.4.1'
+    implementation 'org.greenrobot:greendao:3.2.2'
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.3'
 }

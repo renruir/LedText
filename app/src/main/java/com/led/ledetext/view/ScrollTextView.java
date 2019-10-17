@@ -1,4 +1,4 @@
-package com.led.ledetext;
+package com.led.ledetext.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -16,6 +16,10 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.led.ledetext.R;
+import com.led.ledetext.bean.TextBean;
+import com.led.ledetext.util.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -23,17 +27,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Android auto Scroll Text,like TV News,AD devices
- * <p>
- * NEWEST LOG :
- * 1.setText() immediately take effect (v1.3.6)
- * 2.support scroll forever            (v1.3.7)
- * <p>
- * <p>
- * <p>
- * <p>
- * Basic knowledge：https://www.jianshu.com/p/918fec73a24d
- *
  * @author anylife.zlb@gmail.com  2013/09/02
  */
 public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callback {
@@ -70,21 +63,10 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
 
     private int textColor = Color.BLACK;
 
-    /**
-     * constructs 1
-     *
-     * @param context you should know
-     */
     public ScrollTextView(Context context) {
         super(context);
     }
 
-    /**
-     * constructs 2
-     *
-     * @param context CONTEXT
-     * @param attrs   ATTRS
-     */
     public ScrollTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         surfaceHolder = this.getHolder();  //get The surface holder
@@ -115,7 +97,6 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
 
     /**
      * measure text height width
-     *
      * @param widthMeasureSpec  widthMeasureSpec
      * @param heightMeasureSpec heightMeasureSpec
      */
@@ -141,14 +122,6 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
     }
 
 
-    /**
-     * surfaceChanged
-     *
-     * @param arg0 arg0
-     * @param arg1 arg1
-     * @param arg2 arg1
-     * @param arg3 arg1
-     */
     @Override
     public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
         Log.d(TAG, "arg0:" + arg0.toString() + "  arg1:" + arg1 + "  arg2:" + arg2 + "  arg3:" + arg3);
@@ -432,7 +405,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
         textY = viewHeight / 2 + distance;
     }
 
-    public void updateText(TextModel model, int line) {
+    public void updateText(TextBean model, int line) {
         textColor = model.getColor();
         isSetNewText = true;
         stopScroll = false;
@@ -480,7 +453,8 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
 //                    break;
 //                }
                 if (isStand) {
-                    draw(1, textY);
+                    float startPoint = (viewWidth - textWidth) / 2;
+                    draw(startPoint, textY);
                     stopScroll = true;
                     break;
                 }

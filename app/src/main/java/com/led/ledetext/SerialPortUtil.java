@@ -2,6 +2,8 @@ package com.led.ledetext;
 
 import android.util.Log;
 
+import com.led.ledetext.util.DataUtils;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -74,7 +76,6 @@ public class SerialPortUtil {
     /**
      * 发送数据
      * 通过串口，发送数据到单片机
-     *
      * @param data 要发送的数据
      */
     public void sendSerialPort(String data) {
@@ -99,14 +100,12 @@ public class SerialPortUtil {
     /**
      * 接收串口数据的线程
      */
-
     private class ReceiveThread extends Thread {
         @Override
         public void run() {
             super.run();
             //条件判断，只要条件为true，则一直执行这个线程
             while (isStart) {
-                Log.i(TAG, "r111111111111");
                 if (inputStream == null) {
                     return;
                 }
@@ -115,7 +114,7 @@ public class SerialPortUtil {
                     int size = inputStream.read(readData);
                     if (size > 0) {
                         String readString = DataUtils.byteArrToHex(readData, 0, size);
-                        Log.d(TAG, "run: " + readString);
+                        Log.d(TAG, "rec data: " + readString);
                         EventBus.getDefault().post(readString);
                     }
                 } catch (IOException e) {
