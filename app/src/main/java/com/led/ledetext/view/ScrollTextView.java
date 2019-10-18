@@ -302,7 +302,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
                         return;
                     }
                     try {
-                        Thread.sleep(speed * 1000);
+                        Thread.sleep(speed * 500);
                     } catch (InterruptedException e) {
                         Log.e(TAG, e.toString());
                     }
@@ -359,7 +359,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
                         return;
                     }
                     try {
-                        Thread.sleep(speed * 1000);
+                        Thread.sleep(speed * 500);
                     } catch (InterruptedException e) {
                         Log.e(TAG, e.toString());
                     }

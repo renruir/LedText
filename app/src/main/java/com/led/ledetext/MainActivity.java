@@ -2,7 +2,6 @@ package com.led.ledetext;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (String device : devDevices) {
             Log.d(TAG, "device: " + device);
         }
-        initSerial("/dev/ttyS3", 38400);
+        initSerial("/dev/ttyS1", 19200);
 
         daoSession = ((Application) getApplicationContext()).getDaoSession();
         textBeanDao = daoSession.getTextBeanDao();
@@ -105,7 +104,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case 38:
                     //亮度调节
-
+                    int preBrightness = Integer.parseInt(data.substring(18, 20), 16);
+                    int brightness = preBrightness * 17;
+                    Log.d(TAG, "brightness: " + brightness);
+                    setScreenBrightness(brightness);
                     break;
             }
         } else if (data.length() > 24) {
@@ -181,15 +183,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(String message) {
+    public void getEventBusMsg(String message) {
         Log.d(TAG, "Event: " + message);
-
+        recSerialData(message);
     }
 
     private void setScreenBrightness(int brightness){
-//        if(Utils.isAutoBrightness((Activity)this)){
-//
-//        }
+        if(Utils.isAutoBrightness(this.getContentResolver())){
+            Utils.stopAutoBrightness(this);
+        }
+        Utils.setBrightness(this, brightness);
     }
 
 
@@ -198,10 +201,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.test_serial:
 //                serialPortUtil.sendSerialPort("01010100");
-                //下载驻留信息
-                recSerialData("0000FF0505A1FF002206C800");
-//                recSerialData("0000FF2A2AA1FF0024000D2100010000050A12BBB6D3ADC0B4C4CFBEA957454C434F4D4520544F204E414E4A494E476700");
+
+//                recSerialData("0000FF0505A1FF00260AD000");
+                recSerialData("0000FF3535A1FF002400011501000000011413BBB6D3ADB3CBD7F8C9EEDBDAB9ECB5C0BDBBCDA857454C434F4D4520544F20535A204D4554524FF700");
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

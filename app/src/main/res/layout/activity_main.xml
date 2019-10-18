@@ -4,7 +4,7 @@
     xmlns:customAttr="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="500px"
+    android:layout_height="360px"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -30,7 +30,6 @@
 
         <com.led.ledetext.view.ScrollTextView
             android:id="@+id/line2"
-            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="180px"
             android:layout_alignParentRight="true"
@@ -46,6 +45,7 @@
 
     <Button
         android:id="@+id/test_serial"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="140px"
         android:text="send data" />

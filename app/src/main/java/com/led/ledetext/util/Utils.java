@@ -63,6 +63,7 @@ public class Utils {
         return s;
     }
 
+    //获取是否屏幕自动调节
     public static boolean isAutoBrightness(ContentResolver aContentResolver) {
         boolean automicBrightness = false;
         try {
