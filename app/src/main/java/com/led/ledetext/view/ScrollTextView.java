@@ -97,6 +97,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
 
     /**
      * measure text height width
+     *
      * @param widthMeasureSpec  widthMeasureSpec
      * @param heightMeasureSpec heightMeasureSpec
      */
@@ -108,7 +109,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
         int mHeight = getFontHeight(textSize);  //实际的视图高
         viewWidth = MeasureSpec.getSize(widthMeasureSpec);
         viewHeight = MeasureSpec.getSize(heightMeasureSpec);
-
+        Log.d(TAG, "viewWidth: " + viewWidth + ",viewHeight:" + viewHeight + ",textSize: " + textSize);
         // when layout width or height is wrap_content ,should init ScrollTextView Width/Height
         if (getLayoutParams().width == ViewGroup.LayoutParams.WRAP_CONTENT && getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
             setMeasuredDimension(viewWidth, mHeight);
@@ -297,7 +298,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
                 canvas.drawText(strings.get(n), startPoint, i, paint);
                 surfaceHolder.unlockCanvasAndPost(canvas);
 
-                if (i - baseLine < 4 && i - baseLine > 0) {
+                if (i - baseLine < 3 && i - baseLine > 0) {
                     if (stopScroll) {
                         return;
                     }
@@ -378,6 +379,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
     private synchronized void draw(float X, float Y) {
         Canvas canvas = surfaceHolder.lockCanvas();
         canvas.drawColor(textColor, Mode.CLEAR);
+        paint.setLetterSpacing(0.3f);
         canvas.drawText(text, X, Y, paint);
         surfaceHolder.unlockCanvasAndPost(canvas);
     }
@@ -476,7 +478,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
 //                        --needScrollTimes;
                     }
                 } else {
-                    if(isDown){
+                    if (isDown) {
                         drawVerticalDownScroll();
                     } else {
                         drawVerticalScroll();

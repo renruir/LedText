@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.led.ledetext"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -17,6 +17,13 @@ android {
         main {
             jniLibs.srcDirs = ['libs']
         }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 
     buildTypes {
