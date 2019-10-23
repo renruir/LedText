@@ -116,6 +116,7 @@ public class SerialPortUtil {
                         String readString = DataUtils.byteArrToHex(readData, 0, size);
                         Log.d(TAG, "rec data: " + readString);
                         EventBus.getDefault().post(readString);
+                        ackOK();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -123,6 +124,10 @@ public class SerialPortUtil {
             }
 
         }
+    }
+
+    private void ackOK(){
+        sendSerialPort("0000FF00FF00");
     }
 
 }

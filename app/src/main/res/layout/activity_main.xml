@@ -4,7 +4,7 @@
     xmlns:customAttr="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="360px"
+    android:layout_height="5000px"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -19,12 +19,13 @@
             android:layout_height="180px"
             android:layout_alignParentRight="true"
             android:layout_marginRight="6dp"
+            android:background="#000"
             android:singleLine="true"
             customAttr:isHorizontal="true"
             customAttr:isScrollForever="true"
             customAttr:speed="1"
             customAttr:text="Welcome to ShenZhen!,"
-            customAttr:text_color="#ff000000"
+            customAttr:text_color="#ffffffff"
             customAttr:text_size="@dimen/text_size"
             customAttr:times="567" />
 
@@ -34,20 +35,34 @@
             android:layout_height="180px"
             android:layout_alignParentRight="true"
             android:layout_marginRight="6dp"
+            android:background="#000"
             android:singleLine="true"
             customAttr:isHorizontal="false"
             customAttr:speed="1"
             customAttr:text="Welcome to ShenZhen!"
-            customAttr:text_color="#ff000000"
+            customAttr:text_color="#ffffffff"
             customAttr:text_size="@dimen/text_size"
             customAttr:times="567" />
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/full_srceen_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <Button
         android:id="@+id/test_serial"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="140px"
         android:text="send data" />
+
+    <EditText
+        android:id="@+id/test_input"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 </LinearLayout>

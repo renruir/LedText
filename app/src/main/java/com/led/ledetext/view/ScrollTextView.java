@@ -61,7 +61,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
     boolean isSetNewText = false;
     boolean isScrollForever = true;
 
-    private int textColor = Color.BLACK;
+    private int textColor = Color.WHITE;
 
     public ScrollTextView(Context context) {
         super(context);
@@ -79,7 +79,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
         isDown = arr.getBoolean(R.styleable.ScrollText_isDown, isDown);
         speed = arr.getInteger(R.styleable.ScrollText_speed, speed);
         text = arr.getString(R.styleable.ScrollText_text);
-        int textColor = arr.getColor(R.styleable.ScrollText_text_color, Color.BLACK);
+        textColor = arr.getColor(R.styleable.ScrollText_text_color, Color.WHITE);
         textSize = arr.getDimension(R.styleable.ScrollText_text_size, textSize);
         needScrollTimes = arr.getInteger(R.styleable.ScrollText_times, Integer.MAX_VALUE);
         isScrollForever = arr.getBoolean(R.styleable.ScrollText_isScrollForever, true);
@@ -379,7 +379,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
     private synchronized void draw(float X, float Y) {
         Canvas canvas = surfaceHolder.lockCanvas();
         canvas.drawColor(textColor, Mode.CLEAR);
-        paint.setLetterSpacing(0.3f);
+        paint.setLetterSpacing(0.1f);
         canvas.drawText(text, X, Y, paint);
         surfaceHolder.unlockCanvasAndPost(canvas);
     }
@@ -415,6 +415,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
         if (line == 1) {
             this.text = model.getLine1();
             scrollMode = model.getLine1ScrollModel();
+            Log.d(TAG, "updateText: " + scrollMode);
         } else {
             this.text = model.getLine2();
             scrollMode = model.getLine2ScrollModel();

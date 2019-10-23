@@ -20,7 +20,7 @@ public class Utils {
 
     public final static int SCROLL_STOP = 1000;
     public final static int SCROLL_TO_LEFT = 1001;
-    public final static int SCROLL_TO_UP =1002;
+    public final static int SCROLL_TO_UP = 1002;
     public final static int SCROLL_TO_DOWN = 1003;
 
     public static int getFontColor(String colorString) {
@@ -96,6 +96,7 @@ public class Utils {
 
     /**
      * 设置亮度
+     *
      * @param activity
      * @param brightness
      */
@@ -115,6 +116,63 @@ public class Utils {
         Settings.System.putInt(activity.getContentResolver(),
                 Settings.System.SCREEN_BRIGHTNESS_MODE,
                 Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+    }
+
+    public static void main(String[] args) {
+        LRC("A1FF0029000F");
+    }
+
+    public static int LRC(String hexdata) {
+        if (hexdata == null || hexdata.equals("")) {
+            return 0;
+        }
+        hexdata = hexdata.replaceAll(" ", "");
+        int total = 0;
+        int len = hexdata.length();
+        if (len % 2 != 0) {
+            return 0;
+        }
+        int num = 0;
+        while (num < len) {
+            String s = hexdata.substring(num, num + 2);
+            total += Integer.parseInt(s, 16);
+            num = num + 2;
+        }
+
+        int m = 0x100 - total % 0x100;
+        System.out.println("lrc: "+intToHex(m));
+        return m;
+    }
+
+
+    public static String hexInt(int total) {
+        int a = total / 256;
+        int b = total % 256;
+        if (a > 255) {
+            return hexInt(a) + format(b);
+        }
+        return format(a) + format(b);
+    }
+
+    private static String format(int hex) {
+        String hexa = Integer.toHexString(hex);
+        int len = hexa.length();
+        if (len < 2) {
+            hexa = "0" + hexa;
+        }
+        return hexa;
+    }
+
+    public static String intToHex(int n) {
+        StringBuffer s = new StringBuffer();
+        String a;
+        char []b = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+        while(n != 0){
+            s = s.append(b[n%16]);
+            n = n/16;
+        }
+        a = s.reverse().toString();
+        return a;
     }
 
 }
