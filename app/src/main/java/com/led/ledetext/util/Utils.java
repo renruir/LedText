@@ -3,6 +3,7 @@ package com.led.ledetext.util;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.graphics.Color;
+import android.net.Uri;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
@@ -15,13 +16,15 @@ public class Utils {
     public final static String FONT_COLOR_ORANGE = "010100000";
     public final static String FONT_COLOR_BLUE = "00000100";
     public final static String FONT_COLOR_PURPLE = "01000100";
-    public final static String FONT_COLOR_CYAN = "01010100";
-    public final static String FONT_COLOR_WHITE = "00010100";
+    public final static String FONT_COLOR_CYAN = "00010100";
+    public final static String FONT_COLOR_WHITE = "01010100";
 
     public final static int SCROLL_STOP = 1000;
     public final static int SCROLL_TO_LEFT = 1001;
     public final static int SCROLL_TO_UP = 1002;
     public final static int SCROLL_TO_DOWN = 1003;
+
+    public static final int colorTest[] = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.parseColor("#800080"), Color.parseColor("#00FFFF"), Color.WHITE};
 
     public static int getFontColor(String colorString) {
         Log.d(TAG, "getFontColor: " + colorString);
@@ -101,10 +104,13 @@ public class Utils {
      * @param brightness
      */
     public static void setBrightness(Activity activity, int brightness) {
-        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
-        lp.screenBrightness = Float.valueOf(brightness) * (1f / 255f);
-        Log.d(TAG, "set  lp.screenBrightness == " + lp.screenBrightness);
-        activity.getWindow().setAttributes(lp);
+        Settings.System.putInt(activity.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
+        Uri uri = Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS);
+        activity.getContentResolver().notifyChange(uri, null);
+//        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+//        lp.screenBrightness = Float.valueOf(brightness) * (1f / 255f);
+//        Log.d(TAG, "set  lp.screenBrightness == " + lp.screenBrightness);
+//        activity.getWindow().setAttributes(lp);
     }
 
     /**
@@ -140,7 +146,7 @@ public class Utils {
         }
 
         int m = 0x100 - total % 0x100;
-        System.out.println("lrc: "+intToHex(m));
+        System.out.println("lrc: " + intToHex(m));
         return m;
     }
 
@@ -166,10 +172,10 @@ public class Utils {
     public static String intToHex(int n) {
         StringBuffer s = new StringBuffer();
         String a;
-        char []b = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-        while(n != 0){
-            s = s.append(b[n%16]);
-            n = n/16;
+        char[] b = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+        while (n != 0) {
+            s = s.append(b[n % 16]);
+            n = n / 16;
         }
         a = s.reverse().toString();
         return a;

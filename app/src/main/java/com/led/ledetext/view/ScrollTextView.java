@@ -425,13 +425,16 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
                 this.isStand = true;
                 break;
             case Utils.SCROLL_TO_LEFT:
+                this.isStand = false;
                 this.isHorizontal = true;
                 break;
             case Utils.SCROLL_TO_UP:
+                this.isStand = false;
                 this.isHorizontal = false;
                 this.isDown = false;
                 break;
             case Utils.SCROLL_TO_DOWN:
+                this.isStand = false;
                 this.isHorizontal = false;
                 this.isDown = true;
                 break;

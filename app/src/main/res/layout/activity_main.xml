@@ -4,11 +4,19 @@
     xmlns:customAttr="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="5000px"
+    android:layout_height="360px"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <FrameLayout
+        android:id="@+id/full_srceen_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:visibility="gone" />
+
     <LinearLayout
+        android:id="@+id/scroll_layout"
         android:layout_width="match_parent"
         android:layout_height="360px"
         android:orientation="vertical">
@@ -18,7 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="180px"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="6dp"
             android:background="#000"
             android:singleLine="true"
             customAttr:isHorizontal="true"
@@ -34,7 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="180px"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="6dp"
             android:background="#000"
             android:singleLine="true"
             customAttr:isHorizontal="false"
@@ -45,24 +51,43 @@
             customAttr:times="567" />
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/full_srceen_layout"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <Button
         android:id="@+id/test_serial"
-        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="140px"
-        android:text="send data" />
+        android:text="send data"
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/test_input"
-        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/test_2"
+        android:layout_width="match_parent"
+        android:layout_height="140px"
+        android:text="test2"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/test_input2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/test_3"
+        android:layout_width="match_parent"
+        android:layout_height="140px"
+        android:text="send data"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/test_input3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
 </LinearLayout>

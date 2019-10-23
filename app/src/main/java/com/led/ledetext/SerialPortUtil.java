@@ -14,7 +14,6 @@ import java.io.OutputStream;
 import android_serialport_api.SerialPort;
 
 /**
- *
  * 通过串口用于接收或发送数据
  */
 
@@ -28,12 +27,15 @@ public class SerialPortUtil {
     private ReceiveThread mReceiveThread = null;
     private boolean isStart = false;
 
+    private String tempStr = "";
+    private int allLength = 0;
+
     /**
      * 打开串口，接收数据
      * 通过串口，接收单片机发送来的数据
      */
     public void openSerialPort(String device, int baudRate) {
-        if(device.isEmpty()){
+        if (device.isEmpty()) {
             try {
                 throw new Exception("设备为空");
             } catch (Exception e) {
@@ -76,10 +78,11 @@ public class SerialPortUtil {
     /**
      * 发送数据
      * 通过串口，发送数据到单片机
+     *
      * @param data 要发送的数据
      */
     public void sendSerialPort(String data) {
-        System.out.println("send Serial data is:"+data);
+        System.out.println("send Serial data is:" + data);
         try {
             byte[] sendData = DataUtils.hexToByteArr(data);
             outputStream.write(sendData);
@@ -104,19 +107,31 @@ public class SerialPortUtil {
         @Override
         public void run() {
             super.run();
-            //条件判断，只要条件为true，则一直执行这个线程
             while (isStart) {
                 if (inputStream == null) {
                     return;
                 }
                 byte[] readData = new byte[1024];
+
                 try {
                     int size = inputStream.read(readData);
-                    if (size > 0) {
-                        String readString = DataUtils.byteArrToHex(readData, 0, size);
-                        Log.d(TAG, "rec data: " + readString);
-                        EventBus.getDefault().post(readString);
-                        ackOK();
+                    String str = DataUtils.byteArrToHex(readData, 0, size);
+                    Log.d(TAG, "rec data: " + str);
+                    if (!tempStr.startsWith("0000FF")) {
+                        tempStr = tempStr + str;
+                        Log.d(TAG, "tempStr 111: " + tempStr);
+                    } else {
+                        tempStr = tempStr + str;
+                        if (tempStr.length() >= 8) {
+                            allLength = Integer.parseInt(tempStr.substring(6, 8), 16);
+                            if (tempStr.length() == allLength * 2 + 14) {
+                                Log.d(TAG, "final str: " + tempStr);
+                                EventBus.getDefault().post(tempStr);
+                                ackOK();
+                                tempStr = "";
+                            }
+                        }
+                        Log.d(TAG, "tempStr 222: " + tempStr);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -126,8 +141,7 @@ public class SerialPortUtil {
         }
     }
 
-    private void ackOK(){
+    private void ackOK() {
         sendSerialPort("0000FF00FF00");
     }
-
 }
