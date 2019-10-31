@@ -86,6 +86,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
 
         paint.setColor(textColor);
         paint.setTextSize(textSize);
+        paint.setLetterSpacing(0.1f);
 
         setZOrderOnTop(true);  //Control whether the surface view's surface is placed on top of its window.
         getHolder().setFormat(PixelFormat.TRANSLUCENT);
@@ -360,7 +361,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
                         return;
                     }
                     try {
-                        Thread.sleep(speed * 500);
+                        Thread.sleep(speed * 300);
                     } catch (InterruptedException e) {
                         Log.e(TAG, e.toString());
                     }
@@ -379,7 +380,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
     private synchronized void draw(float X, float Y) {
         Canvas canvas = surfaceHolder.lockCanvas();
         canvas.drawColor(textColor, Mode.CLEAR);
-        paint.setLetterSpacing(0.1f);
+//
         canvas.drawText(text, X, Y, paint);
         surfaceHolder.unlockCanvasAndPost(canvas);
     }
@@ -394,7 +395,7 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
     /**
      * measure tex
      */
-    private void measureVarious() {
+    private synchronized void measureVarious() {
         paint.setColor(textColor);
         textWidth = paint.measureText(text);
         viewWidth_plus_textLength = viewWidth + textWidth;
@@ -415,11 +416,11 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
         if (line == 1) {
             this.text = model.getLine1();
             scrollMode = model.getLine1ScrollModel();
-            Log.d(TAG, "updateText: " + scrollMode);
         } else {
             this.text = model.getLine2();
             scrollMode = model.getLine2ScrollModel();
         }
+        measureVarious();
         switch (scrollMode) {
             case Utils.SCROLL_STOP:
                 this.isStand = true;
@@ -439,10 +440,13 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
                 this.isDown = true;
                 break;
         }
-        measureVarious();
-        invalidate();
+//        invalidate();
     }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+    }
 
     /**
      * Scroll thread
@@ -459,11 +463,18 @@ public class ScrollTextView extends SurfaceView implements SurfaceHolder.Callbac
 //                    break;
 //                }
                 if (isStand) {
+                    Paint nPaint = new Paint();
+                    nPaint.setColor(textColor);
+                    nPaint.setTextSize(textSize);
+                    Log.e(TAG, "stand textWidth: " + textWidth + ", text: " + text);
+                    textWidth = paint.measureText(text);
+                    Log.e(TAG, "stand textWidth 1111: " + textWidth + ", text: " + text);
                     float startPoint = (viewWidth - textWidth) / 2;
                     draw(startPoint, textY);
                     stopScroll = true;
                     break;
                 }
+
 
                 if (isHorizontal) {
                     if (pauseScroll) {
