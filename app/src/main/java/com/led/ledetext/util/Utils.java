@@ -13,7 +13,7 @@ public class Utils {
 
     public final static String FONT_COLOR_RED = "01000000";
     public final static String FONT_COLOR_GREEN = "00010000";
-    public final static String FONT_COLOR_ORANGE = "010100000";
+    public final static String FONT_COLOR_ORANGE = "01010000";
     public final static String FONT_COLOR_BLUE = "00000100";
     public final static String FONT_COLOR_PURPLE = "01000100";
     public final static String FONT_COLOR_CYAN = "00010100";

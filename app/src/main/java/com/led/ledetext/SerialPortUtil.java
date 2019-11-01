@@ -1,5 +1,7 @@
 package com.led.ledetext;
 
+import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.led.ledetext.util.DataUtils;
@@ -114,28 +116,54 @@ public class SerialPortUtil {
                 byte[] readData = new byte[1024];
 
                 try {
-                    int size = inputStream.read(readData);
-                    String str = DataUtils.byteArrToHex(readData, 0, size);
-                    Log.d(TAG, "rec data: " + str);
-                    if (!tempStr.startsWith("0000FF")) {
-                        tempStr = tempStr + str;
-                        Log.d(TAG, "tempStr 111: " + tempStr);
-                    } else {
-                        tempStr = tempStr + str;
-                        if (tempStr.length() >= 8) {
-                            allLength = Integer.parseInt(tempStr.substring(6, 8), 16);
-                            if (tempStr.length() == allLength * 2 + 14) {
-                                Log.d(TAG, "final str: " + tempStr);
-                                EventBus.getDefault().post(tempStr);
-                                ackOK();
-                                tempStr = "";
-                            }
+                    StringBuilder sb = new StringBuilder();
+                    // 为了一次性读完，做了延迟读取
+                    if (inputStream.available() > 0) {
+                        SystemClock.sleep(200);
+                        int size = inputStream.read(readData);
+                        if (size > 0) {
+                            String readString = DataUtils.byteArrToHex(readData, 0, size);
+                            Log.d(TAG, "rec: " + readString);
+                            EventBus.getDefault().post(readString);
+                            sb.setLength(0);
+                            ackOK();
                         }
-                        Log.d(TAG, "tempStr 222: " + tempStr);
                     }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+//                try {
+////                    int size = inputStream.read(readData);
+////                    Log.d(TAG, "size: " + size);
+////                    String str = DataUtils.byteArrToHex(readData, 0, size);
+//                    byte[] buffer = new byte[1024];
+//                    int size = inputStream.read(buffer);
+//                    byte[] readBytes = new byte[size];
+//                    System.arraycopy(buffer, 0, readBytes, 0, size);
+//                    String str = DataUtils.bytesToHexString(readBytes);
+//                    System.out.println("received data => " + new String(readBytes));
+//                    Log.d(TAG, "rec data: " + str);
+//                    if (!(tempStr.startsWith("0000FF") || tempStr.startsWith("0000ff"))) {
+//                        tempStr = tempStr + str;
+//                        Log.d(TAG, "tempStr 111: " + tempStr);
+//                    } else {
+//                        tempStr = tempStr + str;
+//                        if (tempStr.length() >= 8) {
+//                            allLength = Integer.parseInt(tempStr.substring(6, 8), 16);
+//                            if (tempStr.length() == allLength * 2 + 14) {
+//                                Log.d(TAG, "final str: " + tempStr);
+//                                EventBus.getDefault().post(tempStr);
+//                                ackOK();
+//                                tempStr = "";
+//                            }
+//                        }
+//                        Log.d(TAG, "tempStr 222: " + tempStr);
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
 
         }
