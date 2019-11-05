@@ -29,9 +29,6 @@ public class SerialPortUtil {
     private ReceiveThread mReceiveThread = null;
     private boolean isStart = false;
 
-    private String tempStr = "";
-    private int allLength = 0;
-
     /**
      * 打开串口，接收数据
      * 通过串口，接收单片机发送来的数据
@@ -133,37 +130,6 @@ public class SerialPortUtil {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-//                try {
-////                    int size = inputStream.read(readData);
-////                    Log.d(TAG, "size: " + size);
-////                    String str = DataUtils.byteArrToHex(readData, 0, size);
-//                    byte[] buffer = new byte[1024];
-//                    int size = inputStream.read(buffer);
-//                    byte[] readBytes = new byte[size];
-//                    System.arraycopy(buffer, 0, readBytes, 0, size);
-//                    String str = DataUtils.bytesToHexString(readBytes);
-//                    System.out.println("received data => " + new String(readBytes));
-//                    Log.d(TAG, "rec data: " + str);
-//                    if (!(tempStr.startsWith("0000FF") || tempStr.startsWith("0000ff"))) {
-//                        tempStr = tempStr + str;
-//                        Log.d(TAG, "tempStr 111: " + tempStr);
-//                    } else {
-//                        tempStr = tempStr + str;
-//                        if (tempStr.length() >= 8) {
-//                            allLength = Integer.parseInt(tempStr.substring(6, 8), 16);
-//                            if (tempStr.length() == allLength * 2 + 14) {
-//                                Log.d(TAG, "final str: " + tempStr);
-//                                EventBus.getDefault().post(tempStr);
-//                                ackOK();
-//                                tempStr = "";
-//                            }
-//                        }
-//                        Log.d(TAG, "tempStr 222: " + tempStr);
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
             }
 
         }

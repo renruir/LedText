@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:customAttr="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="360px"
     android:orientation="vertical"
     tools:context=".MainActivity">
+
 
     <FrameLayout
         android:id="@+id/full_srceen_layout"
@@ -14,6 +15,29 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
         android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/single_layout"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="360px">
+
+        <com.led.ledetext.view.ScrollTextView
+            android:id="@+id/single_line"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="#000"
+            android:singleLine="true"
+            customAttr:isHorizontal="true"
+            customAttr:isScrollForever="true"
+            customAttr:speed="4"
+            customAttr:text="Welcome to ShenZhen!"
+            customAttr:text_color="#ffffffff"
+            customAttr:text_size="@dimen/text_size"
+            customAttr:times="567" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/scroll_layout"
@@ -31,7 +55,7 @@
             customAttr:isHorizontal="true"
             customAttr:isScrollForever="true"
             customAttr:speed="1"
-            customAttr:text="Welcome to ShenZhen!,"
+            customAttr:text="Welcome to ShenZhen!"
             customAttr:text_color="#ffffffff"
             customAttr:text_size="@dimen/text_size"
             customAttr:times="567" />
@@ -51,6 +75,7 @@
             customAttr:times="567" />
     </LinearLayout>
 
+
     <Button
         android:id="@+id/test_serial"
         android:layout_width="match_parent"
@@ -64,30 +89,4 @@
         android:layout_height="wrap_content"
         android:visibility="gone" />
 
-    <Button
-        android:id="@+id/test_2"
-        android:layout_width="match_parent"
-        android:layout_height="140px"
-        android:text="test2"
-        android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/test_input2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/test_3"
-        android:layout_width="match_parent"
-        android:layout_height="140px"
-        android:text="send data"
-        android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/test_input3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-</LinearLayout>
+    </FrameLayout>

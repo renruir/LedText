@@ -2,6 +2,8 @@ package com.led.ledetext;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SerialPortFinder mSerialPortFinder;
     private ScrollTextView line1;
     private ScrollTextView line2;
+    private ScrollTextView singleLine;
+    private FrameLayout singleLayout;
     private Button testBtn;
 
     private SerialPortUtil serialPortUtil;
@@ -57,11 +61,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout scrollLayout;
 
     private EditText testInput;
-    private EditText input2;
-    private EditText input3;
-
-    private Button test2;
-    private Button test3;
 
     Handler handler = new Handler() {
         @Override
@@ -87,22 +86,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         line1 = (ScrollTextView) findViewById(R.id.line1);
         line2 = (ScrollTextView) findViewById(R.id.line2);
+        singleLine = (ScrollTextView)findViewById(R.id.single_line);
+        singleLayout = (FrameLayout)findViewById(R.id.single_layout);
         testBtn = (Button) findViewById(R.id.test_serial);
         testInput = (EditText) findViewById(R.id.test_input);
-        input2 = (EditText) findViewById(R.id.test_input);
-        input3 = (EditText) findViewById(R.id.test_input3);
-        test2 = (Button) findViewById(R.id.test_2);
-        test3 = (Button) findViewById(R.id.test_3);
         testBtn.setOnClickListener(this);
-        test2.setOnClickListener(this);
-        test3.setOnClickListener(this);
         fullScreenTest = (FrameLayout) findViewById(R.id.full_srceen_layout);
         scrollLayout = (LinearLayout) findViewById(R.id.scroll_layout);
 
-        line1.setText("欢迎来深圳！");
-        line2.setText("Welcome to ShenZhen!");
+        int index = getIndex();
+        Log.d(TAG, "index: " + index);
+        if(index == -1){
+            line1.setText("欢迎来深圳！");
+            line2.setText("Welcome to ShenZhen!");
+        } else {
+            List<TextBean> result = textBeanDao.queryBuilder().where(TextBeanDao.Properties.Num.eq(index)).list();
+            if (result.size() == 0) {
+                Log.d(TAG, "未获取到信息号为" + index + "的驻留信息");
+            }
+            Log.d(TAG, "init: " + result.get(0).getLine1());
+            updateText(result.get(0));
+        }
+
         line1.setSpeed(4);
         line2.setSpeed(4);
+        singleLine.setSpeed(4);
     }
 
     private void initApplication() {
@@ -112,7 +120,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (String device : devDevices) {
             Log.d(TAG, "device: " + device);
         }
-        initSerial("/dev/ttyS2", 19200);
+        initSerial("/dev/ttyS4", 19200); //test
+//        initSerial("/dev/ttyS2", 19200);
 
         daoSession = ((Application) getApplicationContext()).getDaoSession();
         textBeanDao = daoSession.getTextBeanDao();
@@ -171,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d(TAG, "formatRecData: " + result.get(0).getLine1());
                     updateText(result.get(0));
                     serialPortUtil.sendSerialPort("0000FF0505A1FF0023003D00");
+                    saveIndex(index);
                     break;
                 case 38:
                     //亮度调节
@@ -189,8 +199,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case 32:
                     //下载驻留信息
                     textBean = processText(data);
-                    textBeanDao.insertOrReplace(textBean);
+                    long i = textBeanDao.insertOrReplace(textBean);
+                    Log.d(TAG, "download: " + i);
                     serialPortUtil.sendSerialPort("0000FF0505A1FF0021003F00");
+                    saveIndex(textBean.getNum());
                     break;
             }
         } catch (Exception e) {
@@ -250,8 +262,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateText(TextBean textBean) {
-        line1.updateText(textBean, 1);
-        line2.updateText(textBean, 2);
+        if(textBean.getLine2().isEmpty()){
+            line1.setVisibility(View.GONE);
+            line2.setVisibility(View.GONE);
+            singleLayout.setVisibility(View.VISIBLE);
+//            singleLine.updateText(textBean, 1);
+        } else {
+            line1.setVisibility(View.VISIBLE);
+            line2.setVisibility(View.VISIBLE);
+            singleLayout.setVisibility(View.GONE);
+            line1.updateText(textBean, 1);
+            line2.updateText(textBean, 2);
+        }
+
     }
 
     private void selfTest() {
@@ -312,80 +335,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                recSerialData("0000FF3838A1FF002001011501000000011416BBB6D3ADB3CBD7F8C9EEDBDAB9ECB5C0BDBBCDA857454C434F4D4520544F20535A204D4554524F2121215A00");
 //                int lrc = Utils.LRC("A1FF0029000F");
 //                Log.d(TAG, "lrc: " + lrc);
-                recSerialData(testInput.getText().toString());
-                break;
-            case R.id.test_2:
-                test2(input2.getText().toString());
-                break;
-            case R.id.test_3:
-                test2(input3.getText().toString());
+                int preBrightness = Integer.parseInt(testInput.getText().toString());
+                int bt = preBrightness * 17;
+                Log.d(TAG, "brightness: " + bt);
+                setScreenBrightness(bt);
+//                recSerialData(testInput.getText().toString());
                 break;
         }
     }
 
-    private void test2(String data) {
-        if (!tempStr.startsWith("0000FF")) {
-            tempStr = tempStr + data;
-        } else {
-            tempStr = tempStr + data;
-            if (tempStr.length() >= 8) {
-                allLength = Integer.parseInt(tempStr.substring(6, 8), 16);
-                if (tempStr.length() == allLength * 2 + 14) {
-                    Log.d(TAG, "final str: " + tempStr);
-                    EventBus.getDefault().post(tempStr);
-//                                ackOK();
-                    tempStr = "";
-                }
-            }
-        }
-
+    private void saveIndex(int index){
+        SharedPreferences sharedPreferences= getSharedPreferences("data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("index", index);
+        editor.commit();
     }
 
-
-    String tempStr = "";
-    boolean isAllHead = false;
-    int allLength = 0;
-
-    private void test(String readData) {
-//        while (true) {
-        int size = readData.length();
-        if (size > 0) {
-            String str = readData;
-            if (str.startsWith("0000FF") && "".equals(tempStr)) {
-                tempStr = str;
-                if (str.length() >= 8) {
-                    allLength = Integer.parseInt(tempStr.substring(6, 8), 16);
-                    if (str.length() == allLength * 2 + 14) {
-                        EventBus.getDefault().post(str);
-//                                ackOK();
-                        tempStr = "";
-                    } else {
-                        isAllHead = true;
-                        Log.d(TAG, "wait go on 000000000, tempStr:" + tempStr);
-                    }
-                } else {
-                    isAllHead = false;
-                    Log.d(TAG, "rec date only head, tempStr:" + tempStr);
-                }
-                Log.d(TAG, "111 tempStr: " + tempStr);
-            } else {
-                if (tempStr.startsWith("0000FF")) {
-                    if (isAllHead) {
-                        tempStr = tempStr + str;
-                        if (tempStr.length() == allLength * 2 + 14) {
-                            isAllHead = true;
-                            EventBus.getDefault().post(str);
-//                                    ackOK();
-                            tempStr = "";
-                        } else {
-                            Log.d(TAG, "wait go on 111111111, tempStr:" + tempStr);
-                        }
-                    }
-
-                }
-            }
-        }
-        Log.d(TAG, "final tempStr: " + tempStr);
+    private int getIndex(){
+        SharedPreferences sharedPreferences= getSharedPreferences("data", Context .MODE_PRIVATE);
+        int index=sharedPreferences.getInt("index",-1);
+        return index;
     }
 
     @Override
