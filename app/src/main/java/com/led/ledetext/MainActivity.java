@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ScrollTextView line1;
     private ScrollTextView line2;
     private ScrollTextView singleLine;
-    private FrameLayout singleLayout;
+    private LinearLayout singleLayout;
     private Button testBtn;
 
     private SerialPortUtil serialPortUtil;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         line1 = (ScrollTextView) findViewById(R.id.line1);
         line2 = (ScrollTextView) findViewById(R.id.line2);
         singleLine = (ScrollTextView)findViewById(R.id.single_line);
-        singleLayout = (FrameLayout)findViewById(R.id.single_layout);
+        singleLayout = (LinearLayout)findViewById(R.id.single_layout);
         testBtn = (Button) findViewById(R.id.test_serial);
         testInput = (EditText) findViewById(R.id.test_input);
         testBtn.setOnClickListener(this);
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int index = getIndex();
         Log.d(TAG, "index: " + index);
         if(index == -1){
-            line1.setText("欢迎来深圳！");
+            line1.setText("欢迎来到深圳！");
             line2.setText("Welcome to ShenZhen!");
         } else {
             List<TextBean> result = textBeanDao.queryBuilder().where(TextBeanDao.Properties.Num.eq(index)).list();
@@ -120,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (String device : devDevices) {
             Log.d(TAG, "device: " + device);
         }
-        initSerial("/dev/ttyS4", 19200); //test
-//        initSerial("/dev/ttyS2", 19200);
+//        initSerial("/dev/ttyS4", 19200); //test
+        initSerial("/dev/ttyS1", 19200);
 
         daoSession = ((Application) getApplicationContext()).getDaoSession();
         textBeanDao = daoSession.getTextBeanDao();
@@ -266,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             line1.setVisibility(View.GONE);
             line2.setVisibility(View.GONE);
             singleLayout.setVisibility(View.VISIBLE);
-//            singleLine.updateText(textBean, 1);
+            singleLine.updateText(textBean, 1);
         } else {
             line1.setVisibility(View.VISIBLE);
             line2.setVisibility(View.VISIBLE);
@@ -335,11 +336,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                recSerialData("0000FF3838A1FF002001011501000000011416BBB6D3ADB3CBD7F8C9EEDBDAB9ECB5C0BDBBCDA857454C434F4D4520544F20535A204D4554524F2121215A00");
 //                int lrc = Utils.LRC("A1FF0029000F");
 //                Log.d(TAG, "lrc: " + lrc);
-                int preBrightness = Integer.parseInt(testInput.getText().toString());
-                int bt = preBrightness * 17;
-                Log.d(TAG, "brightness: " + bt);
-                setScreenBrightness(bt);
-//                recSerialData(testInput.getText().toString());
+//                int preBrightness = Integer.parseInt(testInput.getText().toString());
+//                int bt = preBrightness * 17;
+//                Log.d(TAG, "brightness: " + bt);
+//                setScreenBrightness(bt);
+                recSerialData(testInput.getText().toString());
                 break;
         }
     }

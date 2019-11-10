@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="360px"
+    android:background="@drawable/background"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
 
     <FrameLayout
         android:id="@+id/full_srceen_layout"
@@ -16,28 +16,28 @@
         android:background="@color/colorPrimary"
         android:visibility="gone" />
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/single_layout"
-        android:visibility="visible"
-        android:layout_width="match_parent"
-        android:layout_height="360px">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <com.led.ledetext.view.ScrollTextView
             android:id="@+id/single_line"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:background="#000"
+            android:visibility="gone"
+            android:background="#0000"
             android:singleLine="true"
             customAttr:isHorizontal="true"
             customAttr:isScrollForever="true"
             customAttr:speed="4"
-            customAttr:text="Welcome to ShenZhen!"
+            customAttr:text="欢迎来到深圳！"
             customAttr:text_color="#ffffffff"
             customAttr:text_size="@dimen/text_size"
             customAttr:times="567" />
 
-    </FrameLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/scroll_layout"
@@ -50,12 +50,12 @@
             android:layout_width="match_parent"
             android:layout_height="180px"
             android:layout_alignParentRight="true"
-            android:background="#000"
+            android:background="#0000"
             android:singleLine="true"
             customAttr:isHorizontal="true"
             customAttr:isScrollForever="true"
-            customAttr:speed="1"
-            customAttr:text="Welcome to ShenZhen!"
+            customAttr:speed="4"
+            customAttr:text="欢迎来到深圳！"
             customAttr:text_color="#ffffffff"
             customAttr:text_size="@dimen/text_size"
             customAttr:times="567" />
@@ -65,28 +65,29 @@
             android:layout_width="match_parent"
             android:layout_height="180px"
             android:layout_alignParentRight="true"
-            android:background="#000"
+            android:background="#0000"
             android:singleLine="true"
             customAttr:isHorizontal="false"
-            customAttr:speed="1"
+            customAttr:speed="4"
             customAttr:text="Welcome to ShenZhen!"
             customAttr:text_color="#ffffffff"
             customAttr:text_size="@dimen/text_size"
             customAttr:times="567" />
     </LinearLayout>
 
-
     <Button
         android:id="@+id/test_serial"
         android:layout_width="match_parent"
         android:layout_height="140px"
+        android:layout_marginTop="400px"
         android:text="send data"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <EditText
         android:id="@+id/test_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
+        android:layout_marginTop="560px"
+        android:visibility="visible" />
 
-    </FrameLayout>
+</FrameLayout>
