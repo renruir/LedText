@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.led.ledetext.bean.DaoSession;
 import com.led.ledetext.bean.TextBean;
@@ -25,6 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout scrollLayout;
 
     private EditText testInput;
+    private int count = 0;
+    private int[] background = {R.drawable.background, R.drawable.background2, R.drawable.background3};
 
     Handler handler = new Handler() {
         @Override
@@ -122,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "device: " + device);
         }
 //        initSerial("/dev/ttyS4", 19200); //test
-        initSerial("/dev/ttyS1", 19200);
+        initSerial("/dev/ttyS2", 19200);
 
         daoSession = ((Application) getApplicationContext()).getDaoSession();
         textBeanDao = daoSession.getTextBeanDao();
@@ -151,6 +155,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case 04:
                     //查询版本
                     serialPortUtil.sendSerialPort("0000FF1010A1FF000500312E30305F3132303731360C00");
+                    Log.d(TAG, "onClick: " + count);
+                    Toast.makeText(mApplication, "切换背景", Toast.LENGTH_SHORT).show();
+                    if(count < 3){
+                        MainActivity.this.getWindow().setBackgroundDrawableResource(background[count]);
+                        count++;
+                    } else {
+                        count = 0;
+                        MainActivity.this.getWindow().setBackgroundDrawableResource(background[count]);
+                    }
                     break;
                 case 224:
                     //模块自测
@@ -340,7 +353,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                int bt = preBrightness * 17;
 //                Log.d(TAG, "brightness: " + bt);
 //                setScreenBrightness(bt);
-                recSerialData(testInput.getText().toString());
+
+//                recSerialData(testInput.getText().toString());
                 break;
         }
     }

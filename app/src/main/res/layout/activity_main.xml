@@ -19,14 +19,14 @@
     <LinearLayout
         android:id="@+id/single_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <com.led.ledetext.view.ScrollTextView
             android:id="@+id/single_line"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:visibility="gone"
             android:background="#0000"
             android:singleLine="true"
             customAttr:isHorizontal="true"
@@ -81,13 +81,13 @@
         android:layout_height="140px"
         android:layout_marginTop="400px"
         android:text="send data"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/test_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="560px"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </FrameLayout>
