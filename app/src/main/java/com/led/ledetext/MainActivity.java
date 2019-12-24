@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private FrameLayout fullScreenTest;
     private LinearLayout scrollLayout;
+    private FrameLayout parentView;
 
     private EditText testInput;
     private int count = 0;
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         EventBus.getDefault().register(this);
-
+        parentView = (FrameLayout)findViewById(R.id.parent);
         line1 = (ScrollTextView) findViewById(R.id.line1);
         line2 = (ScrollTextView) findViewById(R.id.line2);
         singleLine = (ScrollTextView)findViewById(R.id.single_line);
@@ -154,15 +156,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (function) {
                 case 04:
                     //查询版本
-                    serialPortUtil.sendSerialPort("0000FF1010A1FF000500312E30305F3132303731360C00");
+//                    serialPortUtil.sendSerialPort("0000FF1010A1FF000500312E30305F3132303731360C00");
                     Log.d(TAG, "onClick: " + count);
-                    Toast.makeText(mApplication, "切换背景", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(mApplication, "切换背景", Toast.LENGTH_SHORT).show();
+                    count++;
                     if(count < 3){
-                        MainActivity.this.getWindow().setBackgroundDrawableResource(background[count]);
-                        count++;
+                        parentView.setBackgroundResource(background[count]);
                     } else {
                         count = 0;
-                        MainActivity.this.getWindow().setBackgroundDrawableResource(background[count]);
+                        parentView.setBackgroundResource(background[count]);
                     }
                     break;
                 case 224:
@@ -355,6 +357,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                setScreenBrightness(bt);
 
 //                recSerialData(testInput.getText().toString());
+                if(count < 3){
+                    MainActivity.this.getWindow().setBackgroundDrawableResource(background[count]);
+                    count++;
+                } else {
+                    count = 0;
+                    MainActivity.this.getWindow().setBackgroundDrawableResource(background[count]);
+                }
                 break;
         }
     }
@@ -376,5 +385,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        return super.onKeyDown(keyCode, event);
+//        return true;
     }
 }
